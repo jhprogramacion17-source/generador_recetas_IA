@@ -6,35 +6,45 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.database import engine
 
-from app.routers.auth import router as auth_router
-from app.routers.ingredientes import router as ingredientes_router
+from app.routers.auth import (
+    router as auth_router
+)
+
+from app.routers.ingredientes import (
+    router as ingredientes_router
+)
+
+from app.routers.recetas import (
+    router as recetas_router
+)
 
 
-# ==========================================
-# CONFIGURACION DE LA APLICACION
-# ==========================================
+# =====================================
+# CONFIGURACION DE FASTAPI
+# =====================================
 
 app = FastAPI(
     title="SmartRecipe AI",
     description=(
-        "API para generar recetas con "
-        "inteligencia artificial"
+        "API REST para gestionar ingredientes "
+        "y generar recetas con inteligencia artificial"
     ),
     version="1.0.0"
 )
 
 
-# ==========================================
-# REGISTRAR ROUTERS
-# ==========================================
+# =====================================
+# REGISTRO DE ROUTERS
+# =====================================
 
 app.include_router(auth_router)
 app.include_router(ingredientes_router)
+app.include_router(recetas_router)
 
 
-# ==========================================
+# =====================================
 # RUTA PRINCIPAL
-# ==========================================
+# =====================================
 
 @app.get("/")
 def inicio():
@@ -44,9 +54,9 @@ def inicio():
     }
 
 
-# ==========================================
+# =====================================
 # ESTADO DEL SERVIDOR
-# ==========================================
+# =====================================
 
 @app.get("/health")
 def verificar_estado():
@@ -56,12 +66,13 @@ def verificar_estado():
     }
 
 
-# ==========================================
+# =====================================
 # PRUEBA TEMPORAL DE MYSQL
-# ==========================================
+# =====================================
 
 @app.get("/test-db")
 def probar_conexion():
+
     try:
         with engine.connect() as conexion:
             resultado = conexion.execute(
