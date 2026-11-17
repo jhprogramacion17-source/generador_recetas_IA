@@ -1,0 +1,92 @@
+
+# ==========================================
+# SMARTRECIPE AI - GITIGNORE
+# ==========================================
+
+# 1. ENTORNOS VIRTUALES DE PYTHON
+venv/
+.venv/
+env/
+ENV/
+
+# 2. ARCHIVOS TEMPORALES DE PYTHON
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# 3. VARIABLES DE ENTORNO Y CREDENCIALES
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials.json
+
+# 4. ARCHIVOS DE PRUEBAS Y CACHÉ
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# 5. ARCHIVOS DEL EDITOR
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*.swo
+*~
+
+# 6. ARCHIVOS DEL SISTEMA OPERATIVO
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# 7. ARCHIVOS DE REGISTRO
+*.log
+logs/
+pip-log.txt
+
+# 8. BASES DE DATOS LOCALES Y RESPALDOS
+*.sqlite
+*.sqlite3
+*.db
+*.sql.gz
+*.bak
+
+# 9. ARCHIVOS TEMPORALES Y COPIAS
+*.tmp
+*.temp
+*.cache
+*.orig
+*.rej
+*.zip
+*.tar.gz
+
+# 10. ARCHIVOS GENERADOS DE PYTHON
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# 11. ARCHIVOS TEMPORALES DE DOCKER
+docker-compose.override.yml
+
+# 12. ARCHIVOS GENERADOS DEL FRONTEND
+node_modules/
+dist-frontend/
+.cache/
+
+# 13. ARCHIVOS LOCALES DE DESPLIEGUE
+*.pid
+*.pid.lock
+certbot/conf/
+certbot/www/
