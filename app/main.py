@@ -1,20 +1,41 @@
 
 from fastapi import FastAPI
+
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from app.database import engine
-from app.routers.auth import router as auth_router
 
-# Creamos nuestra aplicación
+from app.database import engine
+
+from app.routers.auth import router as auth_router
+from app.routers.ingredientes import router as ingredientes_router
+
+
+# ==========================================
+# CONFIGURACION DE LA APLICACION
+# ==========================================
+
 app = FastAPI(
     title="SmartRecipe AI",
-    description="API para generar recetas con inteligencia artificial",
+    description=(
+        "API para generar recetas con "
+        "inteligencia artificial"
+    ),
     version="1.0.0"
-    
 )
-app.include_router(auth_router)
 
-# Ruta principal
+
+# ==========================================
+# REGISTRAR ROUTERS
+# ==========================================
+
+app.include_router(auth_router)
+app.include_router(ingredientes_router)
+
+
+# ==========================================
+# RUTA PRINCIPAL
+# ==========================================
+
 @app.get("/")
 def inicio():
     return {
@@ -22,7 +43,11 @@ def inicio():
         "estado": "Servidor funcionando correctamente"
     }
 
-# Ruta para comprobar el estado de la API
+
+# ==========================================
+# ESTADO DEL SERVIDOR
+# ==========================================
+
 @app.get("/health")
 def verificar_estado():
     return {
@@ -30,6 +55,10 @@ def verificar_estado():
         "aplicacion": "SmartRecipe AI"
     }
 
+
+# ==========================================
+# PRUEBA TEMPORAL DE MYSQL
+# ==========================================
 
 @app.get("/test-db")
 def probar_conexion():
