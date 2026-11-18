@@ -1,0 +1,68 @@
+
+# ==========================================
+# SMARTRECIPE AI - DOCKERIGNORE
+# ==========================================
+
+# Git
+.git/
+.github/
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+ENV/
+
+# Credenciales y secretos
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials.json
+
+# Cache de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Editores
+.vscode/
+.idea/
+*.code-workspace
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos temporales
+*.log
+logs/
+*.tmp
+*.bak
+
+# Bases de datos y respaldos
+*.sqlite
+*.sqlite3
+*.db
+*.sql.gz
+
+# Dependencias externas
+node_modules/
+
+# Archivos de infraestructura no necesarios
+docker/
+docker-compose.yml
+docker-compose.override.yml
+
+# Archivos comprimidos
+*.zip
+*.tar.gz
