@@ -1,0 +1,31 @@
+name: Desplegar en Railway
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: railway-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: vars.RAILWAY_SERVICE != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Desplegar la aplicación
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE: ${{ vars.RAILWAY_SERVICE }}
+        run: |
+          test -n "$RAILWAY_TOKEN" || { echo "::error::Configura el secreto RAILWAY_TOKEN"; exit 1; }
+          npx --yes --package @railway/cli railway up --ci --service "$RAILWAY_SERVICE"
