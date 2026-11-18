@@ -1,0 +1,78 @@
+
+# ==========================================
+# SMARTRECIPE AI - DOCKER COMPOSE
+# ==========================================
+
+services:
+
+  # ----------------------------------------
+  # BASE DE DATOS MYSQL
+  # ----------------------------------------
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Debes configurar MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: smartrecipe_db
+      MYSQL_USER: smartrecipe_app
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Debes configurar DB_PASSWORD}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'MYSQL_PWD="$${MYSQL_PASSWORD}" mysql -h 127.0.0.1 -u "$${MYSQL_USER}" "$${MYSQL_DATABASE}" -e "SELECT 1" >/dev/null 2>&1'
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 40s
+
+    networks:
+      - smartrecipe_network
+
+  # ----------------------------------------
+  # FASTAPI + FRONTEND
+  # ----------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: smartrecipe_db
+      DB_USER: smartrecipe_app
+      DB_PASSWORD: ${DB_PASSWORD:?Debes configurar DB_PASSWORD}
+
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    networks:
+      - smartrecipe_network
+
+# ------------------------------------------
+# ALMACENAMIENTO PERSISTENTE
+# ------------------------------------------
+volumes:
+  mysql_data:
+
+# ------------------------------------------
+# RED PRIVADA
+# ------------------------------------------
+networks:
+  smartrecipe_network:
+    driver: bridge
