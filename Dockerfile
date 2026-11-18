@@ -37,5 +37,5 @@ USER appuser
 # Puerto interno de FastAPI
 EXPOSE 8000
 
-# Iniciar aplicacion
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Inicializar las tablas antes de aceptar solicitudes.
+CMD ["sh", "-c", "python -m app.init_db && exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

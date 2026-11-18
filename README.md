@@ -119,5 +119,5 @@ Facilitar la preparación de comidas mediante el uso de inteligencia artificial,
    | `OPENROUTER_API_KEY` | Clave de OpenRouter guardada como secreto |
 
 3. Crea un token de proyecto en Railway para el entorno de producción. En GitHub, guárdalo como secreto de Actions `RAILWAY_TOKEN` y añade la variable de Actions `RAILWAY_SERVICE` con el nombre del servicio de la app.
-4. Ejecuta **Desplegar en Railway** desde GitHub Actions. El workflow también se ejecuta al actualizar `main`. Railway crea las tablas antes de iniciar FastAPI.
+4. Ejecuta **Desplegar en Railway** desde GitHub Actions. El workflow también se ejecuta al actualizar `main`. Usa el comando de inicio del Dockerfile en Railway para que el contenedor cree las tablas que falten antes de iniciar FastAPI.
 5. Genera un dominio público para el servicio de la app en Railway. Abre ese dominio y verifica que puedes registrarte, iniciar sesión, añadir un ingrediente y generar una receta.
