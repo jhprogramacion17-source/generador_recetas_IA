@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartRecipe AI — Recetas Inteligentes</title>
+    <link rel="stylesheet" href="/frontend/css/styles.css">
+    <link rel="stylesheet" href="/frontend/css/components.css">
+    <link rel="stylesheet" href="/frontend/css/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+</head>
+<body>
+
+    <!-- ============================== -->
+    <!-- PANTALLA DE CARGA              -->
+    <!-- ============================== -->
+    <div id="splash-screen" class="splash">
+        <div class="splash-content">
+            <span class="material-icons-round splash-icon">restaurant</span>
+            <h1>SmartRecipe AI</h1>
+            <p>Recetas inteligentes con IA</p>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- BARRA DE NAVEGACIÓN            -->
+    <!-- ============================== -->
+    <nav id="navbar" class="navbar hidden">
+        <div class="navbar-brand">
+            <span class="material-icons-round">restaurant</span>
+            <span class="brand-text">SmartRecipe AI</span>
+        </div>
+        <div class="navbar-user" id="navbar-user">
+            <span class="user-name" id="nav-user-name"></span>
+            <button class="btn-icon" id="btn-logout" title="Cerrar sesión">
+                <span class="material-icons-round">logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================== -->
+    <!-- CONTENIDO PRINCIPAL            -->
+    <!-- ============================== -->
+    <main id="app-content" class="app-content">
+
+        <!-- ========================== -->
+        <!-- VISTA: AUTENTICACIÓN       -->
+        <!-- ========================== -->
+        <section id="view-auth" class="view active">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <span class="material-icons-round auth-logo">restaurant</span>
+                    <h1>SmartRecipe AI</h1>
+                    <p>Tu chef personal con inteligencia artificial</p>
+                </div>
+
+                <!-- FORMULARIO LOGIN -->
+                <form id="form-login" class="auth-form">
+                    <h2>Iniciar Sesión</h2>
+
+                    <div class="form-group">
+                        <label for="login-correo">
+                            <span class="material-icons-round">email</span>
+                            Correo electrónico
+                        </label>
+                        <input type="email" id="login-correo" required
+                               placeholder="tu@correo.com" autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">
+                            <span class="material-icons-round">lock</span>
+                            Contraseña
+                        </label>
+                        <input type="password" id="login-password" required
+                               placeholder="••••••••" autocomplete="current-password">
+                    </div>
+
+                    <div id="login-error" class="form-error hidden"></div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="material-icons-round">login</span>
+                        Entrar
+                    </button>
+
+                    <p class="auth-switch">
+                        ¿No tienes cuenta?
+                        <a href="#" id="show-registro">Regístrate aquí</a>
+                    </p>
+                </form>
+
+                <!-- FORMULARIO REGISTRO -->
+                <form id="form-registro" class="auth-form hidden">
+                    <h2>Crear Cuenta</h2>
+
+                    <div class="form-group">
+                        <label for="reg-nombre">
+                            <span class="material-icons-round">person</span>
+                            Nombre
+                        </label>
+                        <input type="text" id="reg-nombre" required
+                               placeholder="Tu nombre" minlength="2" maxlength="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-correo">
+                            <span class="material-icons-round">email</span>
+                            Correo electrónico
+                        </label>
+                        <input type="email" id="reg-correo" required
+                               placeholder="tu@correo.com" autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">
+                            <span class="material-icons-round">lock</span>
+                            Contraseña
+                        </label>
+                        <input type="password" id="reg-password" required
+                               placeholder="Mínimo 8 caracteres" minlength="8"
+                               maxlength="128" autocomplete="new-password">
+                    </div>
+
+                    <div id="registro-error" class="form-error hidden"></div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="material-icons-round">person_add</span>
+                        Registrarse
+                    </button>
+
+                    <p class="auth-switch">
+                        ¿Ya tienes cuenta?
+                        <a href="#" id="show-login">Inicia sesión</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========================== -->
+        <!-- VISTA: DASHBOARD           -->
+        <!-- ========================== -->
+        <section id="view-dashboard" class="view hidden">
+
+            <!-- Tabs de navegación -->
+            <div class="tabs">
+                <button class="tab active" data-tab="ingredientes">
+                    <span class="material-icons-round">inventory_2</span>
+                    <span class="tab-text">Ingredientes</span>
+                </button>
+                <button class="tab" data-tab="generar">
+                    <span class="material-icons-round">auto_awesome</span>
+                    <span class="tab-text">Generar Receta</span>
+                </button>
+                <button class="tab" data-tab="historial">
+                    <span class="material-icons-round">history</span>
+                    <span class="tab-text">Historial</span>
+                </button>
+                <button class="tab" data-tab="favoritas">
+                    <span class="material-icons-round">favorite</span>
+                    <span class="tab-text">Favoritas</span>
+                </button>
+            </div>
+
+            <!-- ====================== -->
+            <!-- TAB: INGREDIENTES      -->
+            <!-- ====================== -->
+            <div id="tab-ingredientes" class="tab-content active">
+                <div class="section-header">
+                    <h2>
+                        <span class="material-icons-round">inventory_2</span>
+                        Mi Inventario
+                    </h2>
+                    <button class="btn btn-primary" id="btn-add-ingrediente">
+                        <span class="material-icons-round">add</span>
+                        Agregar
+                    </button>
+                </div>
+
+                <div id="ingredientes-list" class="items-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div id="ingredientes-empty" class="empty-state hidden">
+                    <span class="material-icons-round">shopping_basket</span>
+                    <h3>Sin ingredientes</h3>
+                    <p>Agrega ingredientes a tu inventario para generar recetas con IA</p>
+                </div>
+            </div>
+
+            <!-- ====================== -->
+            <!-- TAB: GENERAR RECETA    -->
+            <!-- ====================== -->
+            <div id="tab-generar" class="tab-content hidden">
+                <div class="generate-section">
+                    <div class="generate-hero">
+                        <span class="material-icons-round generate-icon">auto_awesome</span>
+                        <h2>Generar Receta con IA</h2>
+                        <p>Nuestra inteligencia artificial creará una receta única
+                           basada en los ingredientes de tu inventario</p>
+                    </div>
+
+                    <div id="generate-preview" class="generate-preview hidden">
+                        <h3>Ingredientes disponibles:</h3>
+                        <div id="generate-ingredients-list" class="chips-list"></div>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="btn-generar-receta">
+                        <span class="material-icons-round">auto_awesome</span>
+                        Generar Receta Ahora
+                    </button>
+
+                    <div id="generate-loading" class="loading-state hidden">
+                        <div class="spinner-large"></div>
+                        <p>La IA está creando tu receta...</p>
+                        <p class="text-muted">Esto puede tomar unos segundos</p>
+                    </div>
+
+                    <div id="generate-result" class="hidden">
+                        <!-- Se llena con la receta generada -->
+                    </div>
+
+                    <div id="generate-error" class="error-state hidden">
+                        <span class="material-icons-round">error_outline</span>
+                        <p id="generate-error-msg"></p>
+                        <button class="btn btn-secondary" id="btn-retry-generate">
+                            <span class="material-icons-round">refresh</span>
+                            Intentar de nuevo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ====================== -->
+            <!-- TAB: HISTORIAL         -->
+            <!-- ====================== -->
+            <div id="tab-historial" class="tab-content hidden">
+                <div class="section-header">
+                    <h2>
+                        <span class="material-icons-round">history</span>
+                        Historial de Recetas
+                    </h2>
+                </div>
+
+                <div id="historial-list" class="recipes-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div id="historial-empty" class="empty-state hidden">
+                    <span class="material-icons-round">menu_book</span>
+                    <h3>Sin recetas</h3>
+                    <p>Genera tu primera receta con inteligencia artificial</p>
+                </div>
+            </div>
+
+            <!-- ====================== -->
+            <!-- TAB: FAVORITAS         -->
+            <!-- ====================== -->
+            <div id="tab-favoritas" class="tab-content hidden">
+                <div class="section-header">
+                    <h2>
+                        <span class="material-icons-round">favorite</span>
+                        Mis Favoritas
+                    </h2>
+                </div>
+
+                <div id="favoritas-list" class="recipes-grid">
+                    <!-- Se llena dinámicamente -->
+                </div>
+
+                <div id="favoritas-empty" class="empty-state hidden">
+                    <span class="material-icons-round">favorite_border</span>
+                    <h3>Sin favoritas</h3>
+                    <p>Marca recetas como favoritas para verlas aquí</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================== -->
+    <!-- MODAL: INGREDIENTE             -->
+    <!-- ============================== -->
+    <div id="modal-ingrediente" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-ingrediente-title">Agregar Ingrediente</h3>
+                <button class="btn-icon modal-close">
+                    <span class="material-icons-round">close</span>
+                </button>
+            </div>
+            <form id="form-ingrediente" class="modal-body">
+                <input type="hidden" id="ingrediente-id">
+
+                <div class="form-group">
+                    <label for="ingrediente-nombre">Nombre</label>
+                    <input type="text" id="ingrediente-nombre" required
+                           placeholder="Ej: Tomate" minlength="1" maxlength="100">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ingrediente-cantidad">Cantidad</label>
+                        <input type="number" id="ingrediente-cantidad" required
+                               placeholder="Ej: 2" min="0.01" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="ingrediente-unidad">Unidad</label>
+                        <select id="ingrediente-unidad" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="unidades">Unidades</option>
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="g">Gramos (g)</option>
+                            <option value="lb">Libras (lb)</option>
+                            <option value="oz">Onzas (oz)</option>
+                            <option value="L">Litros (L)</option>
+                            <option value="ml">Mililitros (ml)</option>
+                            <option value="taza">Tazas</option>
+                            <option value="cucharada">Cucharadas</option>
+                            <option value="cucharadita">Cucharaditas</option>
+                            <option value="pizca">Pizcas</option>
+                            <option value="rebanadas">Rebanadas</option>
+                            <option value="dientes">Dientes</option>
+                            <option value="ramas">Ramas</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="ingrediente-error" class="form-error hidden"></div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-close">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save-ingrediente">
+                        <span class="material-icons-round">save</span>
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- MODAL: DETALLE RECETA          -->
+    <!-- ============================== -->
+    <div id="modal-receta" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modal-receta-title">Detalle de Receta</h3>
+                <button class="btn-icon modal-close">
+                    <span class="material-icons-round">close</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-receta-body">
+                <!-- Se llena dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================== -->
+    <!-- TOAST / NOTIFICACIONES         -->
+    <!-- ============================== -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ============================== -->
+    <!-- SCRIPTS                        -->
+    <!-- ============================== -->
+    <script src="/frontend/js/api.js"></script>
+    <script src="/frontend/js/ui.js"></script>
+    <script src="/frontend/js/auth.js"></script>
+    <script src="/frontend/js/ingredientes.js"></script>
+    <script src="/frontend/js/recetas.js"></script>
+    <script src="/frontend/js/app.js"></script>
+
+</body>
+</html>
