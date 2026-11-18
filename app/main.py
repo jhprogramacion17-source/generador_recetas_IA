@@ -1,5 +1,10 @@
 
+import os
+
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
@@ -34,6 +39,19 @@ app = FastAPI(
 
 
 # =====================================
+# CORS
+# =====================================
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# =====================================
 # REGISTRO DE ROUTERS
 # =====================================
 
@@ -43,15 +61,30 @@ app.include_router(recetas_router)
 
 
 # =====================================
-# RUTA PRINCIPAL
+# ARCHIVOS ESTATICOS DEL FRONTEND
+# =====================================
+
+FRONTEND_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(__file__)),
+    "frontend"
+)
+
+app.mount(
+    "/frontend",
+    StaticFiles(directory=FRONTEND_DIR),
+    name="frontend"
+)
+
+
+# =====================================
+# RUTA PRINCIPAL - SIRVE EL FRONTEND
 # =====================================
 
 @app.get("/")
 def inicio():
-    return {
-        "mensaje": "Bienvenido a SmartRecipe AI",
-        "estado": "Servidor funcionando correctamente"
-    }
+    return FileResponse(
+        os.path.join(FRONTEND_DIR, "index.html")
+    )
 
 
 # =====================================
