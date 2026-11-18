@@ -113,12 +113,8 @@ const Auth = (() => {
     // ---- LOGOUT ----
     function handleLogout() {
         API.logout();
-        currentUser = null;
-
-        UI.hideNavbar();
-        UI.showView('view-auth');
-
-        UI.toast('Sesión cerrada', 'info');
+        // Reiniciar el estado y las solicitudes de la sesión anterior.
+        window.location.reload();
     }
 
     // ---- MOSTRAR DASHBOARD ----
