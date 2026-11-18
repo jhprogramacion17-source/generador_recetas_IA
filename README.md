@@ -102,3 +102,22 @@ proyecto-recetas/
 ## 🎯 Objetivo del software
 
 Facilitar la preparación de comidas mediante el uso de inteligencia artificial, aprovechando los ingredientes disponibles en el hogar y ofreciendo una herramienta digital para organizar alimentos y descubrir nuevas recetas.
+
+## Despliegue en Railway
+
+1. En Railway, crea un proyecto con un servicio MySQL con volumen persistente y un servicio vacío para SmartRecipe AI. Usa el nombre `MySQL` para el servicio de base de datos si vas a copiar estas referencias.
+2. En el servicio de la app, define las variables de conexión usando la red privada de Railway.
+
+   | Variable de la app | Valor en Railway |
+   | --- | --- |
+   | `DB_HOST` | `${{MySQL.RAILWAY_PRIVATE_DOMAIN}}` |
+   | `DB_PORT` | `3306` |
+   | `DB_NAME` | `${{MySQL.MYSQLDATABASE}}` |
+   | `DB_USER` | `${{MySQL.MYSQLUSER}}` |
+   | `DB_PASSWORD` | `${{MySQL.MYSQLPASSWORD}}` |
+   | `JWT_SECRET_KEY` | Secreto aleatorio exclusivo del despliegue |
+   | `OPENROUTER_API_KEY` | Clave de OpenRouter guardada como secreto |
+
+3. Crea un token de proyecto en Railway para el entorno de producción. En GitHub, guárdalo como secreto de Actions `RAILWAY_TOKEN` y añade la variable de Actions `RAILWAY_SERVICE` con el nombre del servicio de la app.
+4. Ejecuta **Desplegar en Railway** desde GitHub Actions. El workflow también se ejecuta al actualizar `main`. Railway crea las tablas antes de iniciar FastAPI.
+5. Genera un dominio público para el servicio de la app en Railway. Abre ese dominio y verifica que puedes registrarte, iniciar sesión, añadir un ingrediente y generar una receta.
